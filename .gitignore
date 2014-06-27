@@ -1,5 +1,5 @@
 # Byte-compiled / optimized / DLL files
-__pycache__/
+# __pycache__/ # Don't need right now - this is only 3.x
 *.py[cod]
 
 # C extensions
@@ -44,10 +44,6 @@ coverage.xml
 
 # Rope
 .ropeproject
-
-# Django stuff:
-*.log
-*.pot
 
 # Sphinx documentation
 docs/_build/
