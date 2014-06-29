@@ -5,17 +5,28 @@
 import sys
 from random import randrange
 
-from util import generate_trees
+import util
+
+# percentage of the board each entity will take up
+
+TREE_PERCENTAGE = 0.5 # 50%
+LUMBERJACK_PERCENTAGE = 0.1 # 10%
+BEAR_PERCENTAGE = 0.02 # 2%
 
 def main():
 	"""Main entry point for the script"""
 	# TODO: implement argparse or optparse (not sure which is used in 2 and which in 3)
 
-	tree_amount = int(raw_input('Tree amount: '))
 	board_dim = int(raw_input('Board dimension (N): '))
+	board_size = board_dim**2
 
-	trees = generate_trees(tree_amount, board_dim)
+	trees = util.generate_trees(int(board_size * TREE_PERCENTAGE), board_dim)
+	lumberjacks = util.generate_lumberjacks(int(board_size * LUMBERJACK_PERCENTAGE), board_dim)
+	bears = util.generate_bears(int(board_size * BEAR_PERCENTAGE), board_dim)
+
 	print trees, len(trees)
+	print lumberjacks, len(lumberjacks)
+	print bears, len(bears)
 
 	return 0
 

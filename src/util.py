@@ -5,6 +5,8 @@ Conatins utility-type functions.
 
 Function list:
 generate_trees
+generate_lumberjacks
+generate_bears
 """
 
 from random import randrange
@@ -36,6 +38,7 @@ def generate_trees(amount, board_dim):
 	Regular: 1 (default)
 	Elder: 2
 	"""
+
 	trees = [0] * amount
 	tree_ids = []
 
@@ -45,7 +48,7 @@ def generate_trees(amount, board_dim):
 	x = 0
 	loop_counter = 0
 	while x < len(trees) and loop_counter < amount * 100:
-		# Technically this while loop could run forever since it's using random. Might keep chosing taken spots,
+		# Technically this while loop could run forever since it's using random. Might keep choosing taken spots,
 		# which is why there's a loop_counter. The x variable is for the list, so can't use that. It increases in
 		# the else part because thats the place where a 'loop through' is wasted.
 
@@ -62,3 +65,56 @@ def generate_trees(amount, board_dim):
 			loop_counter += 1
 
 	return trees
+
+def generate_lumberjacks(amount, board_dim):
+	"""
+	Generating the intial lumberjack configuration with 'amount' number of lumberjacks. Returns the tree list.
+	"""
+
+	lumberjacks = [0] * amount
+	lumberjack_ids = []
+
+	x = 0
+	loop_counter = 0
+	while x < len(lumberjacks) and loop_counter < amount * 100:
+		lumberjack_x = randrange(board_dim) # x coord
+		lumberjack_y = randrange(board_dim) # y coord
+		id_string = str(lumberjack_x) + '/' + str(lumberjack_y)
+
+		if id_string not in lumberjack_ids:
+			lumberjacks[x] = (id_string)
+			lumberjack_ids.append(id_string)
+			x += 1
+		else:
+			loop_counter += 1
+
+	return lumberjacks
+
+def generate_bears(amount, board_dim):
+	"""
+	Generating the intial bear configuration with 'amount' number of trees. Returns the tree list.
+
+	Two options for bears - they could be required to NOT spawn where non-tree entities already are (and vice-versa) or
+	it could not matter. For now I'll start with it not mattering.
+
+	This is almost the exact same function as generate_trees and generate_lumberjacks
+	"""
+
+	bears = [0] * amount
+	bear_ids = []
+
+	x = 0
+	loop_counter = 0
+	while x < len(bears) and loop_counter < amount * 100:
+		bear_x = randrange(board_dim) # x coord
+		bear_y = randrange(board_dim) # y coord
+		id_string = str(bear_x) + '/' + str(bear_y)
+
+		if id_string not in bear_ids:
+			bears[x] = (id_string)
+			bear_ids.append(id_string)
+			x += 1
+		else:
+			loop_counter += 1
+
+	return bears
