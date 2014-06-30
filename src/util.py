@@ -7,6 +7,8 @@ Function list:
 generate_trees
 generate_lumberjacks
 generate_bears
+
+log_month_to_file
 """
 
 from random import randrange
@@ -118,3 +120,50 @@ def generate_bears(amount, board_dim):
 			loop_counter += 1
 
 	return bears
+
+#========================================================
+
+"""
+Month/Year Logging
+==================
+
+Every month the following events will be logged. If none of these happen, then nothing will be logged.
+Lumber harvested
+Saplings created
+Lumberjacks Maw'd
+Trees become elder trees
+
+Lumberjack hired
+Bear captured by zoo
+Bear added
+
+AS WELL AS (originally planned only for year)
+
+# of trees, saplings, and elders
+# of lumberjacks
+# of bears
+# of lumberjacks hired
+# of bears captured
+# of mawings
+
+Every year the following will be logged.
+# of trees, saplings, and elders
+# of lumberjacks
+# of bears
+# of lumberjacks hired
+# of bears captured
+# of mawings
+
+All of these will be stored in a file data.txt (written to from main.py when a given event happens). Although the name of the
+file should not change, a filename to pull data from will be passed as an argument to preserve loose coupling. We shoudln't
+assume too much. These functions merely format everything accordingly and log it to a log file.
+"""
+
+# TODO: this should probably use a DB (overkill maybe? Nice learning experience though, ans would definitely make life easier)
+
+def log_month_to_file(file_to_write, file_to_read):
+	"""
+	A function to log data into a filename. The data will be taken from file_to_read and will be written to file_to_write
+	"""
+
+	# TODO: make month number to be in the format of 0000, 0001, 0002, etc. rather than 1, 2, 3 etc.

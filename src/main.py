@@ -13,8 +13,12 @@ TREE_PERCENTAGE = 0.5 # 50%
 LUMBERJACK_PERCENTAGE = 0.1 # 10%
 BEAR_PERCENTAGE = 0.02 # 2%
 
+MONTH = 0
+YEAR = 0
+
 def main():
 	"""Main entry point for the script"""
+	
 	# TODO: implement argparse or optparse (not sure which is used in 2 and which in 3)
 
 	board_dim = int(raw_input('Board dimension (N): '))
