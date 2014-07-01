@@ -10,12 +10,14 @@ generate_trees
 generate_lumberjacks
 generate_bears
 
-log_month_to_file
+log_month
 find_string_in_file
 """
 
 import sys
 from random import randrange
+
+DELIM = ':' # the delimeter used in the data file. Example: event':'number
 
 def die(string='A fatal error has occured.'):
 	"""
@@ -173,12 +175,21 @@ assume too much. These functions merely format everything accordingly and log it
 
 # TODO: this should probably use a DB (overkill maybe? Nice learning experience though, ans would definitely make life easier)
 
-def log_month_to_file(file_to_write, file_to_read):
+def log_month(log_file, data_file):
 	"""
-	A function to log data into a filename. The data will be taken from file_to_read and will be written to file_to_write
+	A function to log month data into a a log file. The data will be taken from data_file and will be written to log_file.
 	"""
 
 	# TODO: make month number to be in the format of 0000, 0001, 0002, etc. rather than 1, 2, 3 etc.
+
+	events = []
+
+	with open(data_file, 'r') as data_file:
+		for line in data_file:
+			events.append(line.split(DELIM)[0])
+
+	for event in events:
+		print event
 
 def find_string_in_file(string, filename):
 	"""
@@ -197,4 +208,4 @@ def find_string_in_file(string, filename):
 			if string in line:
 				return_string = line
 
-	return return_string
+	return return_string.strip('/n')

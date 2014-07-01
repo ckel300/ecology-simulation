@@ -16,21 +16,17 @@ BEAR_PERCENTAGE = 0.02 # 2%
 MONTH = 0
 YEAR = 0
 
+DATA_FILE = 'data.txt'
+
 def main():
 	"""Main entry point for the script"""
 	
 	# TODO: implement argparse or optparse (not sure which is used in 2 and which in 3)
 
-	board_dim = int(raw_input('Board dimension (N): '))
-	board_size = board_dim**2
+	print util.find_string_in_file('lumber_harvested', DATA_FILE)
+	print util.find_string_in_file('saplings_created', DATA_FILE)
 
-	trees = util.generate_trees(int(board_size * TREE_PERCENTAGE), board_dim)
-	lumberjacks = util.generate_lumberjacks(int(board_size * LUMBERJACK_PERCENTAGE), board_dim)
-	bears = util.generate_bears(int(board_size * BEAR_PERCENTAGE), board_dim)
-
-	print trees, len(trees)
-	print lumberjacks, len(lumberjacks)
-	print bears, len(bears)
+	util.log_month('log.txt', DATA_FILE)
 
 	return 0
 
