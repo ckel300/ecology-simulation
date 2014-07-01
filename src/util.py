@@ -4,14 +4,26 @@
 Conatins utility-type functions.
 
 Function list:
+die
+
 generate_trees
 generate_lumberjacks
 generate_bears
 
 log_month_to_file
+find_string_in_file
 """
 
+import sys
 from random import randrange
+
+def die(string='A fatal error has occured.'):
+	"""
+	A simple function that exits cleanly after printing a given string.
+	"""
+
+	print string
+	sys.exit(0)
 
 """
 Data Representation and Generation
@@ -167,3 +179,22 @@ def log_month_to_file(file_to_write, file_to_read):
 	"""
 
 	# TODO: make month number to be in the format of 0000, 0001, 0002, etc. rather than 1, 2, 3 etc.
+
+def find_string_in_file(string, filename):
+	"""
+	This is a function to find a given string in a file. It doesn't cover te string spanning several lines, but
+	we only need to find the line in which the string is in.
+
+	Returns the whole line containing the search string as a string.
+
+	This simply loops through the file checking every string.
+	"""
+
+	return_string = ""
+
+	with open(filename, 'r') as file:
+		for line in file:
+			if string in line:
+				return_string = line
+
+	return return_string

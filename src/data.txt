@@ -1,0 +1,2 @@
+lumber_harvested:5
+saplings_created:9
