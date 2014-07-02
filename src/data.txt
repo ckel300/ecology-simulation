@@ -1,2 +1,7 @@
-lumber_harvested:5
-saplings_created:9
+Lumber harvested:5
+Sapling(s) created:11
+Lumberjack(s) Maw'd:7
+Tree(s) become elder tree(s):4
+Lumberjack(s) hired:3
+Bear(s) captured:9
+Bear(s) added:2

@@ -11,7 +11,6 @@ generate_lumberjacks
 generate_bears
 
 log_month
-find_string_in_file
 """
 
 import sys
@@ -143,13 +142,13 @@ Month/Year Logging
 
 Every month the following events will be logged. If none of these happen, then nothing will be logged.
 Lumber harvested
-Saplings created
-Lumberjacks Maw'd
-Trees become elder trees
+Sapling(s) created
+Lumberjack(s) Maw'd
+Tree(s) become elder tree(s)
 
 Lumberjack hired
-Bear captured by zoo
-Bear added
+Bear(s) captured
+Bear(s) added
 
 AS WELL AS (originally planned only for year)
 
@@ -175,37 +174,21 @@ assume too much. These functions merely format everything accordingly and log it
 
 # TODO: this should probably use a DB (overkill maybe? Nice learning experience though, ans would definitely make life easier)
 
-def log_month(log_file, data_file):
+def log_month(month, log_file, data_file):
 	"""
 	A function to log month data into a a log file. The data will be taken from data_file and will be written to log_file.
 	"""
 
 	# TODO: make month number to be in the format of 0000, 0001, 0002, etc. rather than 1, 2, 3 etc.
 
-	events = []
+	log_string = 'Month ' + str(month) + ': {0} {1} this month.\n'
 
-	with open(data_file, 'r') as data_file:
+	with open(data_file, 'r') as data_file, open(log_file, 'a') as log_file:
+		log_file.write('MONTH ' + str(month) + '\n')
+		log_file.write('========' + '\n')
+
 		for line in data_file:
-			events.append(line.split(DELIM)[0])
+			line_list = line.split(DELIM)
+			log_file.write(log_string.format('[' + line_list[1].strip('\n') + ']', line_list[0]))
 
-	for event in events:
-		print event
-
-def find_string_in_file(string, filename):
-	"""
-	This is a function to find a given string in a file. It doesn't cover te string spanning several lines, but
-	we only need to find the line in which the string is in.
-
-	Returns the whole line containing the search string as a string.
-
-	This simply loops through the file checking every string.
-	"""
-
-	return_string = ""
-
-	with open(filename, 'r') as file:
-		for line in file:
-			if string in line:
-				return_string = line
-
-	return return_string.strip('/n')
+		log_file.write('\n')

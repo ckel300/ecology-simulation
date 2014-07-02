@@ -2,6 +2,11 @@
 # __pycache__/ # Don't need right now - this is only 3.x
 *.py[cod]
 
+test.py
+
+# log files
+*_log.txt
+
 # C extensions
 *.so
 
