@@ -26,6 +26,7 @@ def main():
 	# TODO: implement argparse or optparse (not sure which is used in 2 and which in 3)
 
 	util.log_month(MONTH, MONTH_LOG, DATA_FILE)
+	util.log_year(YEAR, YEAR_LOG, DATA_FILE)
 
 	return 0
 
