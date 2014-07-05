@@ -19,6 +19,7 @@ from random import randrange
 
 DELIM = ':' # the delimeter used in the data file. Example: event':'number
 
+
 def die(string='A fatal error has occured.'):
     """
     A simple function that exits cleanly after printing a given string.
@@ -40,6 +41,7 @@ is the type of tree (0 for sapling, 1 for regular, 2 for elder)
 
 Bears and Lumberjacks are similar. All entity objects will have the id but not all will have age or type
 """
+
 
 def generate_trees(amount, board_dim):
     """
@@ -82,6 +84,7 @@ def generate_trees(amount, board_dim):
 
     return trees
 
+
 def generate_lumberjacks(amount, board_dim):
     """
     Generating the intial lumberjack configuration with 'amount' number of lumberjacks. Returns the tree list.
@@ -105,6 +108,7 @@ def generate_lumberjacks(amount, board_dim):
             loop_counter += 1
 
     return lumberjacks
+
 
 def generate_bears(amount, board_dim):
     """
@@ -175,6 +179,7 @@ assume too much. These functions merely format everything accordingly and log it
 
 # TODO: this should probably use a DB (overkill maybe? Nice learning experience though, ans would definitely make life easier)
 
+
 def log_month(month, log_file, data_file):
     """
     A function to log month data into a a log file. The data will be taken from data_file and will be written to log_file.
@@ -208,6 +213,7 @@ def log_month(month, log_file, data_file):
         string = 'Month ' + month + ': {0} tree(s), {1} sapling(s), {2} elder(s), {3} lumberjack(s), {4} bear(s), {5} mawing(s)\n'
         string = string.format(stats['trees'], stats['saplings'], stats['elders'], stats['lumberjacks'], stats['bears'], stats['mawings'])
         log_file.write(string)
+
 
 def log_year(year, log_file, data_file):
     """

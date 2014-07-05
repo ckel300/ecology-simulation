@@ -20,6 +20,7 @@ DATA_FILE = 'data.txt'
 MONTH_LOG = 'month_log.txt'
 YEAR_LOG = 'year_log.txt'
 
+
 def main():
     """Main entry point for the script"""
     
