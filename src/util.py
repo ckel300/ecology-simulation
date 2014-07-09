@@ -45,7 +45,7 @@ Bears and Lumberjacks are similar. All entity objects will have the id but not a
 
 def generate_trees(amount, board_dim):
     """
-    Generating the intial tree configuration with 'amount' number of trees. Returns the tree list.
+    Generating the intial tree configuration with 'amount' number of trees. Returns the tree list and tree id list.
 
     The amount and board_dim arguments could all have been global but I am passing them into a function
     to preserve loose coupling. Ideally, I want to be able to test all of these functions out of context and still
@@ -56,6 +56,9 @@ def generate_trees(amount, board_dim):
     Regular: 1 (default)
     Elder: 2
     """
+
+    # TODO - no important but an option - I could sort the trees list in some way so that when I loop through to update it's
+    # in some specific order rather than at random.
 
     trees = [0] * amount
     tree_ids = []
@@ -82,7 +85,7 @@ def generate_trees(amount, board_dim):
         else:
             loop_counter += 1
 
-    return trees
+    return (trees, tree_ids)
 
 
 def generate_lumberjacks(amount, board_dim):

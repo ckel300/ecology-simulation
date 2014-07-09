@@ -3,7 +3,7 @@
 """Main entry point for the ecology simulation. This script also contains all the 'tick' logic"""
 
 import sys
-from random import randrange
+import random
 
 import util
 
@@ -21,13 +21,81 @@ MONTH_LOG = 'month_log.txt'
 YEAR_LOG = 'year_log.txt'
 
 
-def main():
-    """Main entry point for the script"""
-    
-    # TODO: implement argparse or optparse (not sure which is used in 2 and which in 3)
+def tick_tree(tree_tuple, tree_ids):
+    """
+    Given a tree tuple in the format of (id_string, age, type), this function updates the tree. This happens every month.
 
-    util.log_month(MONTH, MONTH_LOG, DATA_FILE)
-    util.log_year(YEAR, YEAR_LOG, DATA_FILE)
+    tree_ids is passed to check for if adjacent cells are taken.
+
+    The logic:
+    A regular tree (type 1) has a 10% chance of spawning a sapling in an adjacent open spot.
+    After 12 months of existence, a sapling (type 0) will upgrade to a tree
+    After 120 months of existence, a tree will upgrade to an elder tree (type 2)
+
+    Returns the updated tree tuple, a list containing new trees, and a list containing new ids
+    """
+
+    # TODO - handle board wrapping (i.e. the cell to the left of a cell on the left edge is the rightest cell - the board wraps around)
+
+    current_id, current_age, current_type = tree_tuple
+    x, y = tuple([int(element) for element in current_id.split('/')])
+    current_age += 1
+
+    new_trees = []
+    new_ids = []
+
+    if current_age is 12 and current_type is 0:
+        current_age = 0 # the age is reset. I could keep it going and upgrade to elder at 120 + 12, but I rather reset
+        current_type = 1
+
+    elif current_age is 120 and current_type is 1:
+        # no need to reset age here, no more use for it
+        current_type = 2
+
+    tree_percentages = {0: 0.0, 1: 0.1, 2: 0.2} # by tree type
+
+    surrounding_coords = [(x - 1, y + 1), (x, y + 1), (x + 1, y + 1), (x + 1, y), (x + 1, y - 1), (x, y - 1), (x - 1, y - 1), (x - 1, y)]
+    available_coords = [x for x in surrounding_coords if '/'.join(str(coord) for coord in x) not in tree_ids]
+
+    try:
+        if random.random() < tree_percentages[current_type]:
+            # creating a new tree tuple and adding it to new_trees
+            new_coords = random.choice(available_coords)
+            new_id = '/'.join(str(coord) for coord in new_coords)
+            new_trees.append((new_id, 0, 0)) # appending a sapling to new_trees
+            new_ids.append(new_id)
+    except IndexError:
+        pass # try/except instead of if block. random.choice will throw and IndexError if available_coords is empty. In
+             # that case, we don't place a sapling, just keep going.
+
+    return ((current_id, current_age, current_type), new_trees, new_ids) # the first is an updated tree tuple for the current tree
+
+
+def main():
+    """
+    Main entry point for the script
+    """
+    
+    # TODO: implement Click for CLI interface
+
+    current_trees, current_ids = util.generate_trees(10, 5)
+    for tree in current_trees:
+        print tree
+    print current_ids
+
+    for index, tree in enumerate(current_trees):
+        new_tree, new_trees, new_ids = tick_tree(tree, current_ids)
+        current_trees[index] = new_tree
+
+        if new_trees:
+            current_trees += new_trees
+
+        if new_ids:
+            current_ids += new_ids
+
+    for tree in current_trees:
+        print tree
+    print current_ids
 
     return 0
 
