@@ -15,7 +15,7 @@ log_year
 """
 
 import sys
-from random import randrange
+import random
 
 DELIM = ':' # the delimeter used in the data file. Example: event':'number
 
@@ -62,60 +62,47 @@ def generate_trees(amount, board_dim):
 
     trees = [0] * amount
     tree_ids = []
+    open_spots = ['/'.join(str(x), str(y)) for x in xrange(board_dim) and for y in xrange(board_dim)]
 
     default_type = 1
     default_age = 0
 
     x = 0
-    loop_counter = 0
-    while x < len(trees) and loop_counter < amount * 100:
-        # Technically this while loop could run forever since it's using random. Might keep choosing taken spots,
-        # which is why there's a loop_counter. The x variable is for the list, so can't use that. It increases in
-        # the else part because thats the place where a 'loop through' is wasted.
+    while x < len(trees):
 
-        tree_x = randrange(board_dim) # x coord
-        tree_y = randrange(board_dim) # y coord
-        id_string = str(tree_x) + '/' + str(tree_y)
-
-        if id_string not in tree_ids:
-            # checking for conflicting IDs. If the tree already exists, can't put another tree there.
-            trees[x] = (id_string, default_age, default_type)
-            tree_ids.append(id_string)
-            x += 1
-        else:
-            loop_counter += 1
+        id_string = random.choice(open_spots)
+        trees[x] = (id_string, default_age, default_type)
+        tree_ids.append(id_string)
+        open_spots.remove(id_string)
+        x += 1
 
     return (trees, tree_ids)
 
 
 def generate_lumberjacks(amount, board_dim):
     """
-    Generating the intial lumberjack configuration with 'amount' number of lumberjacks. Returns the tree list.
+    Generating the intial lumberjack configuration with 'amount' number of lumberjacks. Returns the lumberjack list.
     """
 
     lumberjacks = [0] * amount
     lumberjack_ids = []
+    open_spots = ['/'.join(str(x), str(y)) for x in xrange(board_dim) and for y in xrange(board_dim)]
 
     x = 0
-    loop_counter = 0
-    while x < len(lumberjacks) and loop_counter < amount * 100:
-        lumberjack_x = randrange(board_dim) # x coord
-        lumberjack_y = randrange(board_dim) # y coord
-        id_string = str(lumberjack_x) + '/' + str(lumberjack_y)
+    while x < len(lumberjacks):
 
-        if id_string not in lumberjack_ids:
-            lumberjacks[x] = (id_string)
-            lumberjack_ids.append(id_string)
-            x += 1
-        else:
-            loop_counter += 1
+        id_string = random.choice(open_spots)
+        lumberjacks[x] = (id_string)
+        lumberjack_ids.append(id_string)
+        open_spots.remove(id_string)
+        x += 1
 
     return lumberjacks
 
 
 def generate_bears(amount, board_dim):
     """
-    Generating the intial bear configuration with 'amount' number of trees. Returns the tree list.
+    Generating the intial bear configuration with 'amount' number of bears. Returns the bear list.
 
     Two options for bears - they could be required to NOT spawn where non-tree entities already are (and vice-versa) or
     it could not matter. For now I'll start with it not mattering.
@@ -125,20 +112,16 @@ def generate_bears(amount, board_dim):
 
     bears = [0] * amount
     bear_ids = []
+    open_spots = ['/'.join(str(x), str(y)) for x in xrange(board_dim) and for y in xrange(board_dim)]
 
     x = 0
-    loop_counter = 0
-    while x < len(bears) and loop_counter < amount * 100:
-        bear_x = randrange(board_dim) # x coord
-        bear_y = randrange(board_dim) # y coord
-        id_string = str(bear_x) + '/' + str(bear_y)
+    while x < len(bears):
 
-        if id_string not in bear_ids:
-            bears[x] = (id_string)
-            bear_ids.append(id_string)
-            x += 1
-        else:
-            loop_counter += 1
+        id_string = random.choice(open_spots)
+        bears[x] = (id_string)
+        bear_ids.append(id_string)
+        open_spots.remove(id_string)
+        x += 1
 
     return bears
 
