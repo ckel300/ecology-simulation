@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/pytho
 
 """Main entry point for the ecology simulation. This script also contains all the 'tick' logic"""
 

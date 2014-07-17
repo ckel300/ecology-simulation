@@ -4,8 +4,6 @@
 Conatins utility-type functions.
 
 Function list:
-die
-
 generate_trees
 generate_lumberjacks
 generate_bears
@@ -17,16 +15,25 @@ log_year
 import sys
 import random
 
-DELIM = ':' # the delimeter used in the data file. Example: event':'number
+# This is probably not the best way to store data. Alternatives include DB, JSON, File.
 
+month_events = [
+    'lumber harvested',
+    'spaling(s) created',
+    'lumberjack(s) maw\'d',
+    'elder(s) created',
+    'lumberjack(s) hired',
+    'bear(s) captured',
+    'bear(s) added',
+    '# of trees',
+    '# of saplings',
+    '# of elders',
+    '# of lumberjacks',
+    '# of bears'
+]
 
-def die(string='A fatal error has occured.'):
-    """
-    A simple function that exits cleanly after printing a given string.
-    """
+MONTH_DATA = [event: 0 for event in month_events]
 
-    print string
-    sys.exit(0)
 
 """
 Data Representation and Generation
@@ -69,12 +76,13 @@ def generate_trees(amount, board_dim):
 
     x = 0
     while x < len(trees):
-
         id_string = random.choice(open_spots)
         trees[x] = (id_string, default_age, default_type)
         tree_ids.append(id_string)
         open_spots.remove(id_string)
         x += 1
+
+    MONTH_DATA['# of trees'] = amount
 
     return (trees, tree_ids)
 
@@ -96,6 +104,8 @@ def generate_lumberjacks(amount, board_dim):
         lumberjack_ids.append(id_string)
         open_spots.remove(id_string)
         x += 1
+
+    MONTH_DATA['# of lumberjacks'] = amount
 
     return lumberjacks
 
@@ -123,6 +133,8 @@ def generate_bears(amount, board_dim):
         open_spots.remove(id_string)
         x += 1
 
+    MONTH_DATA['# of bears'] = amount
+
     return bears
 
 #========================================================
@@ -146,9 +158,6 @@ AS WELL AS (originally planned only for year)
 # of trees, saplings, and elders
 # of lumberjacks
 # of bears
-# of lumberjacks hired
-# of bears captured
-# of mawings
 
 Every year the following will be logged.
 # of trees, saplings, and elders
@@ -158,9 +167,8 @@ Every year the following will be logged.
 # of bears captured
 # of mawings
 
-All of these will be stored in a file data.txt (written to from main.py when a given event happens). Although the name of the
-file should not change, a filename to pull data from will be passed as an argument to preserve loose coupling. We shoudln't
-assume too much. These functions merely format everything accordingly and log it to a log file.
+All of are stored in dictionaries - event_string: num_times. The dicts will be stored in this file
+and imported from the main.py file.
 """
 
 # TODO: this should probably use a DB (overkill maybe? Nice learning experience though, ans would definitely make life easier)
