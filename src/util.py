@@ -15,7 +15,8 @@ log_year
 import sys
 import random
 
-# This is probably not the best way to store data. Alternatives include DB, JSON, File.
+# This is probably not the best way to store data.
+# Alternatives include DB, JSON, File.
 
 month_events = [
     'lumber harvested',
@@ -32,30 +33,36 @@ month_events = [
     '# of bears'
 ]
 
-MONTH_DATA = [event: 0 for event in month_events]
+# MONTH_DATA = [event: 0 for event in month_events]
 
 
 """
 Data Representation and Generation
 ==================================
- 
+
 Every "player" or "object" type is an entity (i.e. Trees, Bears, Lumberjacks)
 An entity object is an "instance" of the entity (e.g. a single tree)
- 
+
 Each entity will be a list of tuples. Each tuple will be an entity object.
-Trees: ('x/y', age in months, type). The first is the 'id' - the string 'x/y'. The second is the age in months, and the third
+
+Trees: ('x/y', age in months, type). The first is the 'id' - the string 'x/y'.
+The second is the age in months, and the third
+
 is the type of tree (0 for sapling, 1 for regular, 2 for elder)
 
-Bears and Lumberjacks are similar. All entity objects will have the id but not all will have age or type
+Bears and Lumberjacks are similar. All entity objects will have the id but not
+all will have age or type
 """
 
 
 def generate_trees(amount, board_dim):
     """
-    Generating the intial tree configuration with 'amount' number of trees. Returns the tree list and tree id list.
+    Generating the intial tree configuration with 'amount' number of trees.
+    Returns the tree list and tree id list.
 
-    The amount and board_dim arguments could all have been global but I am passing them into a function
-    to preserve loose coupling. Ideally, I want to be able to test all of these functions out of context and still
+    The amount and board_dim arguments could all have been global but I am
+    passing them into a function to preserve loose coupling. Ideally,
+    I want to be able to test all of these functions out of context and still
     have them work.
 
     Tree types:
@@ -64,7 +71,7 @@ def generate_trees(amount, board_dim):
     Elder: 2
     """
 
-    # TODO - no important but an option - I could sort the trees list in some way so that when I loop through to update it's
+    # TODO - no important but an option - I could sort the trees list in some
     # in some specific order rather than at random.
 
     trees = [0] * amount
@@ -89,7 +96,8 @@ def generate_trees(amount, board_dim):
 
 def generate_lumberjacks(amount, board_dim):
     """
-    Generating the intial lumberjack configuration with 'amount' number of lumberjacks. Returns the lumberjack list.
+    Generating the intial lumberjack configuration with 'amount' number of
+    lumberjacks. Returns the lumberjack list.
     """
 
     lumberjacks = [0] * amount
@@ -112,12 +120,15 @@ def generate_lumberjacks(amount, board_dim):
 
 def generate_bears(amount, board_dim):
     """
-    Generating the intial bear configuration with 'amount' number of bears. Returns the bear list.
+    Generating the intial bear configuration with 'amount' number of bears.
+    Returns the bear list.
 
-    Two options for bears - they could be required to NOT spawn where non-tree entities already are (and vice-versa) or
-    it could not matter. For now I'll start with it not mattering.
+    Two options for bears - they could be required to NOT spawn where non-tree
+    entities already are (and vice-versa) or it could not matter. For now I'll
+    start with it not mattering.
 
-    This is almost the exact same function as generate_trees and generate_lumberjacks
+    This is almost the exact same function as generate_trees and
+    generate_lumberjacks
     """
 
     bears = [0] * amount
@@ -137,13 +148,15 @@ def generate_bears(amount, board_dim):
 
     return bears
 
-#========================================================
+#############################################
 
 """
 Month/Year Logging
 ==================
 
-Every month the following events will be logged. If none of these happen, then nothing will be logged.
+Every month the following events will be logged. If none of these happen,
+then nothing will be logged.
+
 Lumber harvested
 Sapling(s) created
 Lumberjack(s) Maw'd
@@ -167,23 +180,27 @@ Every year the following will be logged.
 # of bears captured
 # of mawings
 
-All of are stored in dictionaries - event_string: num_times. The dicts will be stored in this file
-and imported from the main.py file.
+All of are stored in dictionaries - event_string: num_times.
+The dicts will be stored in this file and imported from the main.py file.
 """
 
-# TODO: this should probably use a DB (overkill maybe? Nice learning experience though, ans would definitely make life easier)
+# TODO: this should probably use a DB (overkill maybe? Nice learning experience
+# though, ans would definitely make life easier)
 
 
 def log_month(month, log_file, data_file):
     """
-    A function to log month data into a a log file. The data will be taken from data_file and will be written to log_file.
+    A function to log month data into a a log file. The data will be taken from
+    data_file and will be written to log_file.
 
-    The first part of the data is events, the second is stats. The two are separated by a blank line in the data file.
+    The first part of the data is events, the second is stats. The two are
+    separated by a blank line in the data file.
     """
 
-    # TODO: make month number to be in the format of 0000, 0001, 0002, etc. rather than 1, 2, 3 etc.
+    # TODO: make month number to be in the format of 0000, 0001, 0002, etc.
+    # rather than 1, 2, 3 etc.
 
-    month = str(month) # just making sure
+    month = str(month)  # just making sure
     log_string = 'Month ' + month + ': {0} {1} this month.\n'
 
     with open(data_file, 'r') as data_file, open(log_file, 'a') as log_file:
@@ -192,18 +209,23 @@ def log_month(month, log_file, data_file):
 
         for line in data_file:
             if line in ['\n', '\r\n']:
-                break # break if the next section of data begins - this is signified by an empty line.
+                break  # break if the next section of data begins - this is
+                # signified by an empty line.
 
             line_list = line.split(DELIM)
-            log_file.write(log_string.format('[' + line_list[1].strip('\n') + ']', line_list[0], '\n'))
-            
+            log_file.write(
+                log_string.format(
+                    '[' + line_list[1].strip('\n') + ']', line_list[0], '\n'
+                    )
+            )
+
         stats = {}
         for line in data_file:
             line_list = line.split(DELIM)
             stats.update({line_list[0]: line_list[1].strip('\n')})
 
         # TODO: probably don't need dict for this...
-        # horrible spagetti-y code. Need to simplify. A lot. Too overcomplicated.
+        # horrible spagetti-y code. Need to simplify. A lot. Too complicated.
         string = 'Month ' + month + ': {0} tree(s), {1} sapling(s), {2} elder(s), {3} lumberjack(s), {4} bear(s), {5} mawing(s)\n'
         string = string.format(stats['trees'], stats['saplings'], stats['elders'], stats['lumberjacks'], stats['bears'], stats['mawings'])
         log_file.write(string)
@@ -211,13 +233,15 @@ def log_month(month, log_file, data_file):
 
 def log_year(year, log_file, data_file):
     """
-    Similar to the second part of log_month - I'm simply logging stats to a year_log file.
+    Similar to the second part of log_month - I'm simply logging stats to a
+    year_log file.
     """
 
-    year = str(year) # just making sure...
+    year = str(year)  # just making sure...
 
     # First I need to skip the events and find the stats
-    # TODO: change data file to have events/stats headings and then write a find finction
+    # TODO: change data file to have events/stats headings and then write a
+    # find finction
     with open(data_file, 'r') as data_file, open(log_file, 'a') as log_file:
         for line in data_file:
             if line in ['\n', '\r\n']:
@@ -229,7 +253,7 @@ def log_year(year, log_file, data_file):
             stats.update({line_list[0]: line_list[1].strip('\n')})
 
         # TODO: probably don't need dict for this...
-        # horrible spagetti-y code. Need to simplify. A lot. Too overcomplicated.
+        # horrible spagetti-y code. Need to simplify. A lot. Too complicated.
         string = 'Year ' + year + ': {0} tree(s), {1} sapling(s), {2} elder(s), {3} lumberjack(s), {4} bear(s), {5} mawing(s)\n'
         string = string.format(stats['trees'], stats['saplings'], stats['elders'], stats['lumberjacks'], stats['bears'], stats['mawings'])
         log_file.write(string)
