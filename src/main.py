@@ -19,7 +19,6 @@ BEAR_PERCENTAGE = 0.02  # 2%
 MONTH = 0
 YEAR = 0
 
-DATA_FILE = 'data.txt'
 MONTH_LOG = 'month_log.txt'
 YEAR_LOG = 'year_log.txt'
 
@@ -94,10 +93,12 @@ def main():
 
     # TODO: implement Click for CLI interface
 
+    util.generate_trees(50, 10)
+    util.generate_lumberjacks(5, 10)
+    util.generate_bears(5, 10)
+    util.log_month(MONTH, MONTH_LOG)
+
     current_trees, current_ids = util.generate_trees(10, 5)
-    for tree in current_trees:
-        print tree
-    print current_ids
 
     for index, tree in enumerate(current_trees):
         new_tree, new_trees, new_ids = tick_tree(tree, current_ids)
@@ -108,10 +109,6 @@ def main():
 
         if new_ids:
             current_ids += new_ids
-
-    for tree in current_trees:
-        print tree
-    print current_ids
 
     return 0
 
