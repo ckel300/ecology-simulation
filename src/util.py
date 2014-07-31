@@ -12,7 +12,6 @@ log_month
 log_year
 """
 
-import sys
 import random
 
 # This is probably not the best way to store data.
@@ -34,6 +33,19 @@ month_events = [
 ]
 
 MONTH_DATA = {event: 1 for event in month_events}
+
+year_events = [
+    'tree(s)',
+    'sapling(s)',
+    'elder(s)',
+    'lumberjack(s)',
+    'bear(s)',
+    'lumberjack(s) hired'
+    'bear(s) captured'
+    'mawing(s)'
+]
+
+YEAR_DATA = {event: 0 for event in year_events}
 
 
 """
@@ -88,6 +100,7 @@ def generate_trees(amount, board_dim):
         x += 1
 
     MONTH_DATA['tree(s)'] += amount
+    YEAR_DATA['tree(s)'] += amount
 
     return (trees, tree_ids)
 
@@ -115,6 +128,7 @@ def generate_lumberjacks(amount, board_dim):
         x += 1
 
     MONTH_DATA['lumberjack(s)'] += amount
+    YEAR_DATA['lumberjack(s)'] += amount
 
     return lumberjacks
 
@@ -149,6 +163,7 @@ def generate_bears(amount, board_dim):
         x += 1
 
     MONTH_DATA['bear(s)'] += amount
+    YEAR_DATA['bear(s)'] += amount
 
     return bears
 
@@ -196,8 +211,6 @@ def log_month(month, log_file):
     """
     A function to log month data into a a log file. The data will be taken from
     the MONTH_DATA dict and will be written to log_file.
-
-    The first part of the data is events, the second is stats.
     """
 
     # TODO: make month number to be in the format of 0000, 0001, 0002, etc.
@@ -216,29 +229,21 @@ def log_month(month, log_file):
             )
 
 
-# def log_year(year, log_file, data_file):
-#     """
-#     Similar to the second part of log_month - I'm simply logging stats to a
-#     year_log file.
-#     """
+def log_year(year, log_file):
+    """
+    A function to log year data into a a log file. The data will be taken from
+    the YEAR_DATA dict and will be written to log_file.
+    """
 
-#     year = str(year)  # just making sure...
+    year = str(year)  # just making sure...
 
-#     # First I need to skip the events and find the stats
-#     # TODO: change data file to have events/stats headings and then write a
-#     # find finction
-#     with open(data_file, 'r') as data_file, open(log_file, 'a') as log_file:
-#         for line in data_file:
-#             if line in ['\n', '\r\n']:
-#                 break
+    log_string = 'Year ' + year + ': [{number}] {event} this year.\n'
 
-#         stats = {}
-#         for line in data_file:
-#             line_list = line.split(DELIM)
-#             stats.update({line_list[0]: line_list[1].strip('\n')})
+    with open(log_file, 'a') as log_file:
+        log_file.write('YEAR {year}\n'.format(year=year))
+        log_file.write('========\n')
 
-#         # TODO: probably don't need dict for this...
-#         # horrible spagetti-y code. Need to simplify. A lot. Too complicated.
-#         string = 'Year ' + year + ': {0} tree(s), {1} sapling(s), {2} elder(s), {3} lumberjack(s), {4} bear(s), {5} mawing(s)\n'
-#         string = string.format(stats['trees'], stats['saplings'], stats['elders'], stats['lumberjacks'], stats['bears'], stats['mawings'])
-#         log_file.write(string)
+        for event in YEAR_DATA.keys():
+            log_file.write(
+                log_string.format(number=YEAR_DATA[event], event=event)
+            )

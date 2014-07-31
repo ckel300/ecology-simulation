@@ -97,6 +97,7 @@ def main():
     util.generate_lumberjacks(5, 10)
     util.generate_bears(5, 10)
     util.log_month(MONTH, MONTH_LOG)
+    util.log_year(YEAR, YEAR_LOG)
 
     current_trees, current_ids = util.generate_trees(10, 5)
 
