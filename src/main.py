@@ -23,6 +23,13 @@ MONTH_LOG = 'month_log.txt'
 YEAR_LOG = 'year_log.txt'
 
 
+def generate_surrounding_coords(x, y):
+    return (
+        (x - 1, y + 1), (x, y + 1), (x + 1, y + 1), (x + 1, y),
+        (x + 1, y - 1), (x, y - 1), (x - 1, y - 1), (x - 1, y)
+    )
+
+
 def tick_tree(tree_tuple, tree_ids):
     """
     Given a tree tuple in the format of (id_string, age, type), this function
@@ -64,11 +71,11 @@ def tick_tree(tree_tuple, tree_ids):
 
     tree_percentages = {0: 0.0, 1: 0.1, 2: 0.2}  # by tree type
 
-    surrounding_coords = {
-        (x - 1, y + 1), (x, y + 1), (x + 1, y + 1), (x + 1, y),
-        (x + 1, y - 1), (x, y - 1), (x - 1, y - 1), (x - 1, y)
-    }
-    available_coords = [i for i in surrounding_coords if '/'.join(str(coord) for coord in i) not in tree_ids]
+    surrounding_coords = generate_surrounding_coords(x, y)
+    available_coords = [
+        i for i in surrounding_coords
+        if '/'.join(str(coord) for coord in i) not in tree_ids
+    ]
 
     try:
         if random.random() < tree_percentages[current_type]:
@@ -81,9 +88,17 @@ def tick_tree(tree_tuple, tree_ids):
         pass  # try/except instead of if block. random.choice will throw and
         # IndexError if available_coords is empty.
         # In that case, we don't place a sapling, just keep going.
+        # I'm just avoiding LBYL.
 
     # the first is an updated tree tuple for the current tree
     return ((current_id, current_age, current_type), new_trees, new_ids)
+
+
+def tick_lumberjack(lumberjack_tuple, lumberjack_ids, tree_ids):
+    """
+    Given a tree tuple in the format of (id_string, age, type), this function
+    updates the tree. This happens every month.
+    """
 
 
 def main():

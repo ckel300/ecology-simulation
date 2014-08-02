@@ -112,20 +112,19 @@ def generate_lumberjacks(amount, board_dim):
     """
 
     lumberjacks = [0] * amount
-    lumberjack_ids = []
+
+    # With an open_spots list I can just choose from it at random instead of
+    # checking new coords to see if they are already used.
     open_spots = [None] * (board_dim ** 2)  # to avoid appending
     for i in xrange(len(open_spots)):
         for x in xrange(board_dim):
             for y in xrange(board_dim):
                 open_spots[i] = '/'.join([str(x), str(y)])
 
-    x = 0
-    while x < len(lumberjacks):
+    for i in xrange(amount):
         id_string = random.choice(open_spots)
-        lumberjacks[x] = (id_string)
-        lumberjack_ids.append(id_string)
+        lumberjacks[i] = (id_string)
         open_spots.remove(id_string)
-        x += 1
 
     MONTH_DATA['lumberjack(s)'] += amount
     YEAR_DATA['lumberjack(s)'] += amount
@@ -147,20 +146,17 @@ def generate_bears(amount, board_dim):
     """
 
     bears = [0] * amount
-    bear_ids = []
+
     open_spots = [None] * (board_dim ** 2)  # to avoid appending
     for i in xrange(len(open_spots)):
         for x in xrange(board_dim):
             for y in xrange(board_dim):
                 open_spots[i] = '/'.join([str(x), str(y)])
 
-    x = 0
-    while x < len(bears):
+    for i in xrange(amount):
         id_string = random.choice(open_spots)
-        bears[x] = (id_string)
-        bear_ids.append(id_string)
+        bears[i] = (id_string)
         open_spots.remove(id_string)
-        x += 1
 
     MONTH_DATA['bear(s)'] += amount
     YEAR_DATA['bear(s)'] += amount
