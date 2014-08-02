@@ -42,7 +42,6 @@ def tick_tree(tree_tuple, tree_ids):
     adjacent open spot.
 
     After 12 months of existence, a sapling (type 0) will upgrade to a tree
-
     After 120 months of existence, a tree will upgrade to an
     elder tree (type 2)
 
@@ -94,11 +93,32 @@ def tick_tree(tree_tuple, tree_ids):
     return ((current_id, current_age, current_type), new_trees, new_ids)
 
 
-def tick_lumberjack(lumberjack_tuple, lumberjack_ids, tree_ids):
+def tick_lumberjack(lumberjack_id, lumberjacks, tree_ids):
     """
-    Given a tree tuple in the format of (id_string, age, type), this function
-    updates the tree. This happens every month.
+    Given a lumberjack_id, this function updates it. This happens every
+    month. The lumberjacks andtree_ids lists are passed for other LJ checks
+    and LJ/tree logic
+
+    The logic:
+    Lumberjacks will wander 3 times to any surrounding coords unless they
+    happen upon a tree or an elder tree (not sapling) in which case they chop
+    it down. Trees give 1 lumber, elders give 2.
     """
+
+    x, y = tuple(lumberjack_id.split('/'))
+    moves = 3
+
+    while moves > 0:
+        surrounding_coords = generate_surrounding_coords(x, y)
+
+        new_coords = random.choice(surrounding_coords)
+        if new_coords not in lumberjacks:
+            x, y = tuple(new_coords.split('/'))
+
+            if new_coords in tree_ids:
+                moves = 0  # stops wandering when finds tree
+                # TODO - change trees to include age, type, in id. This makes
+                # life easier here.
 
 
 def main():
