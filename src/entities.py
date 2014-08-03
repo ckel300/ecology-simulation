@@ -9,9 +9,34 @@ def generate_surrounding_coords(x, y):
     """
     Generates the surrounding 8 coords of (x, y)
     """
+
+    # these are necessary for board wrapping
+    #
+    # Every 'x' has three possible values - x-1, x, x+1.
+    # We'll call these x_right, x, x_left
+    # Same for 'y' - y_top, y, y_bot
+    # Note - y_bot is y+1, even though it is bottom (imagine a 2D array)
+
+    # defaults (since x and y never change, no need to define them):
+    x_right = x - 1
+    x_left = x + 1
+
+    y_top = y + 1
+    y_bot = y - 1
+
+    if x > (BOARD_DIM - 2):  # -1 for array 0-indexing and another -1 for the
+        # actual wrapping
+        x_right = 0
+    elif x < 1:
+        x_left = BOARD_DIM - 1
+
+    if y < 1:
+        y_top = BOARD_DIM - 1
+    elif y > (BOARD_DIM - 2):
+        y_bot = 0
+
     return (
-        (x - 1, y + 1), (x, y + 1), (x + 1, y + 1), (x + 1, y),
-        (x + 1, y - 1), (x, y - 1), (x - 1, y - 1), (x - 1, y)
+        (x_right, y_bot), (x, y_bot), (x_left, y_bot), (x_left, y),
     )
 
 
