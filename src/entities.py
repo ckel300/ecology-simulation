@@ -18,11 +18,11 @@ def generate_surrounding_coords(x, y):
     # Note - y_bot is y+1, even though it is bottom (imagine a 2D array)
 
     # defaults (since x and y never change, no need to define them):
-    x_right = x - 1
-    x_left = x + 1
+    x_right = x + 1
+    x_left = x - 1
 
-    y_top = y + 1
-    y_bot = y - 1
+    y_top = y - 1
+    y_bot = y + 1
 
     if x > (BOARD_DIM - 2):  # -1 for array 0-indexing and another -1 for the
         # actual wrapping
@@ -35,9 +35,10 @@ def generate_surrounding_coords(x, y):
     elif y > (BOARD_DIM - 2):
         y_bot = 0
 
-    return (
+    return [
         (x_right, y_bot), (x, y_bot), (x_left, y_bot), (x_left, y),
-    )
+        (x_left, y_top), (x, y_top), (x_right, y_top), (x_right, y)
+    ]
 
 
 class Tree(object):
