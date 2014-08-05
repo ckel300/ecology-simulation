@@ -161,7 +161,7 @@ class TreeTest(unittest.TestCase):
 
     def tearDown(self):
         # resetting the trees list
-        self.tree = []
+        self.trees = []
 
         self.trees.append(self.sapling)
         self.trees.append(self.regular_tree)
