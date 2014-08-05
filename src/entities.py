@@ -63,7 +63,7 @@ class Tree(object):
     trees = []  # list of all tree objects
     tree_coords = []  # list of all tree coord tuples
 
-    sap_spawn_percentages = {'sap': 0.1, 'tree': 0.1, 'elder': 0.2}
+    sap_spawn_percentages = {'sap': 0.0, 'tree': 0.1, 'elder': 0.2}
 
     def __init__(self, x, y, age=0, tree_type='tree'):
         self.x = x
@@ -75,11 +75,20 @@ class Tree(object):
         self.trees.append(self)
         self.tree_coords.append((x, y))
 
-    def spawn_sapling(self, x, y):
+        self.available_coords = [
+            i for i in self.surrounding_coords
+            if i not in self.tree_coords
+        ]
+
+    def spawn_sapling(self):
         """
         Spawns a sapling at given x, y, and adds to trees list
         """
-        self.trees.append(Tree(x, y, 'sap'))
+
+        x, y = random.choice(self.available_coords)
+
+        if (x, y) is not None:
+            return Tree(x, y, tree_type='sap')
 
     def month_tick(self):
         """
@@ -103,11 +112,8 @@ class Tree(object):
             self.age = 0  # no need to reset here, but just in case
 
         # The sapling
-        available_coords = [
-            i for i in self.surrounding_coords
-            if i not in self.tree_coords
-        ]
 
         if random.random() < self.sap_spawn_percentages[self.type]:
-            new_x, new_y = random.choice(available_coords)
-            self.spawn_sapling(new_x, new_y)
+            new_sap = self.spawn_sapling()
+            self.trees.append(new_sap)
+            self.tree_coords.remove((new_sap.x, new_sap.y))

@@ -101,5 +101,74 @@ class GenerateCoordsTest(unittest.TestCase):
             msg='(0, 9) lower left corner did not pass.'
             )
 
+
+class TreeTest(unittest.TestCase):
+    """
+    Tests for all the Tree functions
+    """
+
+    def setUp(self):
+        self.trees = []
+
+        # a tree of each type
+        self.sapling = entities.Tree(7, 2, 3, 'sap')
+        self.regular_tree = entities.Tree(5, 8, 56, 'tree')
+        self.elder_tree = entities.Tree(2, 8, 124, 'elder')
+
+        # a corner tree and an edge tree
+        self.edge_reguler = entities.Tree(9, 7)
+        self.corner_regular = entities.Tree(9, 0)
+
+        self.trees.append(self.sapling)
+        self.trees.append(self.regular_tree)
+        self.trees.append(self.elder_tree)
+        self.trees.append(self.edge_reguler)
+        self.trees.append(self.corner_regular)
+
+    def test_spawn_sapling(self):
+        """
+        Will spawn_sapling always correctly spawn a new tree?
+        """
+
+        # Not testing sapling since it shouldn't spawn a sap anyways
+
+        ##############################
+        # regular_tree sapling spawn #
+        ##############################
+        regular_sap_spawn = self.regular_tree.spawn_sapling()
+
+        # checking that it is indeed a Tree object
+        self.assertIsInstance(regular_sap_spawn, entities.Tree)
+
+        # checking that x and y are in surrounding coords
+        self.assertIn((regular_sap_spawn.x, regular_sap_spawn.y),
+                      self.regular_tree.available_coords)
+
+        # checking age and type
+        self.assertEquals(regular_sap_spawn.age, 0)
+        self.assertEquals(regular_sap_spawn.tree_type, 'sap')
+
+        ############################
+        # elder_tree sapling spawn #
+        ############################
+        elder_sap_spawn = self.elder_tree.spawn_sapling()
+
+        self.assertIsInstance(elder_sap_spawn, entities.Tree)
+        self.assertIn((elder_sap_spawn.x, elder_sap_spawn.y),
+                      self.elder_tree.available_coords)
+        self.assertEquals(elder_sap_spawn.age, 0)
+        self.assertEquals(elder_sap_spawn.tree_type, 'sap')
+
+    def tearDown(self):
+        # resetting the trees list
+        self.tree = []
+
+        self.trees.append(self.sapling)
+        self.trees.append(self.regular_tree)
+        self.trees.append(self.elder_tree)
+        self.trees.append(self.edge_reguler)
+        self.trees.append(self.corner_regular)
+
+
 if __name__ == '__main__':
     unittest.main()
