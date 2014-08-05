@@ -111,8 +111,8 @@ class TreeTest(unittest.TestCase):
         self.trees = []
 
         # a tree of each type
-        self.sapling = entities.Tree(7, 2, 3, 'sap')
-        self.regular_tree = entities.Tree(5, 8, 56, 'tree')
+        self.sapling = entities.Tree(7, 2, 11, 'sap')
+        self.regular_tree = entities.Tree(5, 119, 56, 'tree')
         self.elder_tree = entities.Tree(2, 8, 124, 'elder')
 
         # a corner tree and an edge tree
