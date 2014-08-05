@@ -2,7 +2,7 @@
 
 import unittest
 
-import entities
+import src.entities as entities
 
 
 class GenerateCoordsTest(unittest.TestCase):
