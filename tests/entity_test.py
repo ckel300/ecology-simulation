@@ -111,8 +111,8 @@ class TreeTest(unittest.TestCase):
         self.trees = []
 
         # a tree of each type
-        self.sapling = entities.Tree(7, 2, 11, 'sap')
-        self.regular_tree = entities.Tree(5, 119, 56, 'tree')
+        self.sapling = entities.Tree(7, 2, 10, 'sap')
+        self.regular_tree = entities.Tree(5, 8, 119, 'tree')
         self.elder_tree = entities.Tree(2, 8, 124, 'elder')
 
         # a corner tree and an edge tree
@@ -144,9 +144,16 @@ class TreeTest(unittest.TestCase):
         self.assertIn((regular_sap_spawn.x, regular_sap_spawn.y),
                       self.regular_tree.available_coords)
 
+        # checking that available_coords was properly modified
+        available_coords_length = len(self.regular_tree.available_coords)
+        self.assertEquals(len(regular_sap_spawn.available_coords),
+                          available_coords_length - 1)
+
         # checking age and type
         self.assertEquals(regular_sap_spawn.age, 0)
         self.assertEquals(regular_sap_spawn.tree_type, 'sap')
+
+        self.regular_tree.spawned_sapling = False  # cleanup for next part
 
         ############################
         # elder_tree sapling spawn #
@@ -156,8 +163,52 @@ class TreeTest(unittest.TestCase):
         self.assertIsInstance(elder_sap_spawn, entities.Tree)
         self.assertIn((elder_sap_spawn.x, elder_sap_spawn.y),
                       self.elder_tree.available_coords)
+
+        available_coords_length = len(self.elder_tree.available_coords)
+        self.assertEquals(len(elder_sap_spawn.available_coords),
+                          available_coords_length - 1)
+
         self.assertEquals(elder_sap_spawn.age, 0)
         self.assertEquals(elder_sap_spawn.tree_type, 'sap')
+
+        self.elder_tree.spawned_sapling = False
+
+    def test_month_tick(self):
+        """
+        Does month_tick properly 'tick' the trees everytime?
+        """
+
+        ######################
+        # sapling month tick #
+        ######################
+        self.sapling.month_tick()  # changing state rather than returning new
+
+        # checking age
+        self.assertEquals(self.sapling.age, 11)
+
+        # checking type
+        self.assertEquals(self.sapling.tree_type, 'sap')
+
+        # checking that sapling was NOT spawned
+        self.assertEquals(self.sapling.spawned_sapling, False)
+
+        ###########################
+        # regular_tree month tick #
+        ###########################
+        self.regular_tree.month_tick()
+
+        self.assertEquals(self.regular_tree.age, 0)
+        self.assertEquals(self.regular_tree.tree_type, 'elder')
+        self.assertEquals(self.regular_tree.spawned_sapling, True)
+
+        #########################
+        # elder_tree month tick #
+        #########################
+        self.elder_tree.month_tick()
+
+        self.assertEquals(self.elder_tree.age, 125)
+        self.assertEquals(self.elder_tree.tree_type, 'elder')
+        self.assertEquals(self.elder_tree.spawned_sapling, True)
 
     def tearDown(self):
         # resetting the trees list

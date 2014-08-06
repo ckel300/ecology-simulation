@@ -63,7 +63,7 @@ class Tree(object):
     trees = []  # list of all tree objects
     tree_coords = []  # list of all tree coord tuples
 
-    sap_spawn_percentages = {'sap': 0.0, 'tree': 0.1, 'elder': 0.2}
+    sap_spawn_percentages = {'sap': 0.0, 'tree': 1.0, 'elder': 1.0}
 
     def __init__(self, x, y, age=0, tree_type='tree'):
         self.x = x
@@ -79,6 +79,8 @@ class Tree(object):
             i for i in self.surrounding_coords
             if i not in self.tree_coords
         ]
+
+        self.spawned_sapling = False
 
     def spawn_sapling(self):
         """
@@ -103,17 +105,18 @@ class Tree(object):
 
         self.age += 1
 
-        if self.type == 'sap' and self.age >= 12:
-            self.type = 'tree'
+        if self.tree_type == 'sap' and self.age >= 12:
+            self.tree_type = 'tree'
             self.age = 0  # reset age here to go to 120
 
-        if self.type == 'tree' and self.age >= 120:
-            self.type = 'elder'
+        if self.tree_type == 'tree' and self.age >= 120:
+            self.tree_type = 'elder'
             self.age = 0  # no need to reset here, but just in case
 
         # The sapling
 
-        if random.random() < self.sap_spawn_percentages[self.type]:
+        if random.random() < self.sap_spawn_percentages[self.tree_type]:
+            self.spawned_sapling = True
             new_sap = self.spawn_sapling()
             self.trees.append(new_sap)
             self.tree_coords.remove((new_sap.x, new_sap.y))
