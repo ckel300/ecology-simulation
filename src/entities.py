@@ -41,6 +41,35 @@ def generate_surrounding_coords(x, y):
     ]
 
 
+def check_entity_collision(entity1, entity2):
+    """
+    Checks if the two given entities "collide" (i.e. coords same)
+    """
+
+    try:
+        return (entity1.x, entity1.y) == (entity2.x, entity2.y)
+    except AttributeError:
+        print 'Please pass only entities that have x/y coords.'
+
+
+class Entity(object):
+    """
+    Parent class for ALL entities.
+    """
+
+
+class StaticEntity(Entity):
+    """
+    Parent class for all static entities (i.e. trees, lakes, etc.)
+    """
+
+
+class DynamicEntity(Entity):
+    """
+    Parent class for all dynamic entities (i.e. people, bears, etc.)
+    """
+
+
 class Tree(object):
     """
     A Tree object.
