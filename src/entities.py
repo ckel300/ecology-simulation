@@ -215,9 +215,9 @@ class Tree(StaticEntity):
 
         # The sapling
         if random.random() < self.sap_spawn_percentages[self.tree_type]:
-            new_sap = self.spawn_sapling()
+            self.spawn_sapling()
             self.spawned_sapling = True
-            self.all_entity_coords.remove((new_sap.x, new_sap.y))
+            self.update_coords(self.x, self.y)
 
 
 class Lumberjack(DynamicEntity):
