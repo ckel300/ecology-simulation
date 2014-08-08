@@ -55,25 +55,88 @@ def check_entity_collision(entity1, entity2):
 class Entity(object):
     """
     Parent class for ALL entities.
+
+    Instance Attributes:
+    x
+    y
+    surrounding_coords
+    available_coords
+
+    Class Attributes:
+    all
+    all_coords
+
+    Methods:
+    update_coords
     """
+
+    all_entity = []
+    all_entity_coords = []
 
     def __init__(self, x, y):
         self.x = x
         self.y = y
 
+        self.all_entity.append(self)
+        self.all_entity_coords.append((x, y))
+
+        self.surrounding_coords = generate_surrounding_coords(x, y)
+        self.available_coords = [
+            i for i in self.surrounding_coords
+            if i not in self.all_entity_coords
+        ]
+
+    def update_coords(self, x, y):
+        self.x = x
+        self.y = y
+        self.surrounding_coords = generate_surrounding_coords(x, y)
+        self.available_coords = [
+            i for i in self.surrounding_coords
+            if i not in self.all_entity_coords
+        ]
+
 
 class StaticEntity(Entity):
     """
     Parent class for all static entities (i.e. trees, lakes, etc.)
-    """
 
-    def __init__(self, x, y):
-        Entity.__init__(self, x, y)
+    Inherited Instance Attributes:
+    x
+    y
+    surrounding_coords
+    available_coords
+
+    Inherited Class Attributes:
+    all_entity
+    all_entity_coords
+
+    Inherited Methods:
+    update_coords
+    """
 
 
 class DynamicEntity(Entity):
     """
     Parent class for all dynamic entities (i.e. people, bears, etc.)
+
+    Inherited Instance Attributes:
+    x
+    y
+    surrounding_coords
+    available_coords
+
+    Inherited Class Attributes:
+    all_entity
+    all_entity_coords
+
+    Inherited Methods:
+    update_coords
+
+    Instance Attributes:
+    moves
+
+    Methods:
+    move
     """
 
     def __init__(self, x, y, moves):
@@ -85,43 +148,38 @@ class Tree(StaticEntity):
     """
     A Tree class inheriting from StaticEntity.
 
-    Instance attributes:
+    Inherited Instance Attributes:
     x
     y
+    surrounding_coords
+    available_coords
+
+    Instance attributes:
     age
     tree_type (sap, tree, elder)
+    lumber
+    spawned_sapling
 
-    Class attributes:
-    trees
-    tree_coords
+    Inherited Class Attributes:
+    all_entity
+    all_entity_coords
+
+    Inherited Methods:
+    update_coords
 
     Methods:
     month_tick
     spawn_sapling
     """
 
-    trees = []  # list of all tree objects
-    tree_coords = []  # list of all tree coord tuples
-
     sap_spawn_percentages = {'sap': 0.0, 'tree': 1.0, 'elder': 1.0}
     lumber_yield = {'sap': 0, 'tree': 1, 'elder': 2}
 
     def __init__(self, x, y, age=0, tree_type='tree'):
-        self.x = x
-        self.y = y
+        StaticEntity.__init__(self, x, y)
         self.age = age
         self.tree_type = tree_type
         self.lumber = self.lumber_yield[self.tree_type]
-        self.surrounding_coords = generate_surrounding_coords(x, y)
-
-        self.trees.append(self)
-        self.tree_coords.append((x, y))
-
-        self.available_coords = [
-            i for i in self.surrounding_coords
-            if i not in self.tree_coords
-        ]
-
         self.spawned_sapling = False
 
     def spawn_sapling(self):
@@ -156,9 +214,27 @@ class Tree(StaticEntity):
             self.age = 0  # no need to reset here, but just in case
 
         # The sapling
-
         if random.random() < self.sap_spawn_percentages[self.tree_type]:
             new_sap = self.spawn_sapling()
             self.spawned_sapling = True
-            self.trees.append(new_sap)
-            self.tree_coords.remove((new_sap.x, new_sap.y))
+            self.all_entity_coords.remove((new_sap.x, new_sap.y))
+
+
+class Lumberjack(DynamicEntity):
+    """
+    A Luberjack class inheriting from DynamicEntity
+
+    Inherited Instance Attributes:
+    x
+    y
+    moves
+    surrounding_coords
+    available_coords
+
+    Inherited Class Attributes:
+    all_entity
+    all_entity_coords
+
+    Inherited Methods:
+    update_coords
+    """
