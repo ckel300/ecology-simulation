@@ -57,11 +57,18 @@ class Entity(object):
     Parent class for ALL entities.
     """
 
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
 
 class StaticEntity(Entity):
     """
     Parent class for all static entities (i.e. trees, lakes, etc.)
     """
+
+    def __init__(self, x, y):
+        Entity.__init__(self, x, y)
 
 
 class DynamicEntity(Entity):
@@ -69,14 +76,18 @@ class DynamicEntity(Entity):
     Parent class for all dynamic entities (i.e. people, bears, etc.)
     """
 
+    def __init__(self, x, y, moves):
+        Entity.__init__(self, x, y)
+        self.moves = moves
 
-class Tree(object):
+
+class Tree(StaticEntity):
     """
-    A Tree object.
+    A Tree class inheriting from StaticEntity.
 
     Instance attributes:
-    x_coord
-    y_oord
+    x
+    y
     age
     tree_type (sap, tree, elder)
 
@@ -93,12 +104,14 @@ class Tree(object):
     tree_coords = []  # list of all tree coord tuples
 
     sap_spawn_percentages = {'sap': 0.0, 'tree': 1.0, 'elder': 1.0}
+    lumber_yield = {'sap': 0, 'tree': 1, 'elder': 2}
 
     def __init__(self, x, y, age=0, tree_type='tree'):
         self.x = x
         self.y = y
         self.age = age
         self.tree_type = tree_type
+        self.lumber = self.lumber_yield[self.tree_type]
         self.surrounding_coords = generate_surrounding_coords(x, y)
 
         self.trees.append(self)
@@ -145,7 +158,7 @@ class Tree(object):
         # The sapling
 
         if random.random() < self.sap_spawn_percentages[self.tree_type]:
-            self.spawned_sapling = True
             new_sap = self.spawn_sapling()
+            self.spawned_sapling = True
             self.trees.append(new_sap)
             self.tree_coords.remove((new_sap.x, new_sap.y))
