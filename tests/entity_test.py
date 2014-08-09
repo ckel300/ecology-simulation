@@ -144,10 +144,6 @@ class TreeTest(unittest.TestCase):
         self.assertIn((regular_sap_spawn.x, regular_sap_spawn.y),
                       self.regular_tree.available_coords)
 
-        # checking that available_coords was properly modified
-        available_coords_length = len(self.regular_tree.available_coords)
-        # self.assertEquals(available_coords_length, available_coords_length - 1)
-
         # checking that available_coords is fine in the sapling
         self.assertLessEqual(len(regular_sap_spawn.available_coords), 7)
 
@@ -166,9 +162,6 @@ class TreeTest(unittest.TestCase):
         self.assertIsInstance(elder_sap_spawn, entities.Tree)
         self.assertIn((elder_sap_spawn.x, elder_sap_spawn.y),
                       self.elder_tree.available_coords)
-
-        available_coords_length = len(self.elder_tree.available_coords)
-        # self.assertEquals(available_coords_length, available_coords_length - 1)
 
         self.assertLessEqual(len(elder_sap_spawn.available_coords), 7)
 
