@@ -101,5 +101,23 @@ class GenerateCoordsTest(unittest.TestCase):
             msg='(0, 9) lower left corner did not pass.'
             )
 
+
+class CheckEntityCollisionTest(unittest.TestCase):
+    """
+    Does check_entity_collision always properly detect collisions?
+    """
+
+    def setUp(self):
+        # a few trees to test, for now. Also a non-entity variable
+        self.tree1 = entities.Tree(5, 8)
+        self.tree2 = entities.Tree(7, 8)
+        self.tree3 = entities.Tree(3, 2)
+
+        self.check_collision = entities.check_entity_collision
+
+    def test_check_entity_collision(self):
+        self.assertEquals(self.check_collision(self.tree1, self.tree2), True)
+        self.assertEquals(self.check_collision(self.tree2, self.tree3), False)
+
 if __name__ == '__main__':
     unittest.main()

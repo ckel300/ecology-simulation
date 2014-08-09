@@ -47,7 +47,7 @@ def check_entity_collision(entity1, entity2):
     """
 
     try:
-        return (entity1.x, entity1.y) == (entity2.x, entity2.y)
+        return (entity1.x == entity2.x) or (entity1.y == entity2.y)
     except AttributeError:
         print 'Please pass only entities that have x/y coords.'
 
