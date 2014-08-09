@@ -119,12 +119,6 @@ class TreeTest(unittest.TestCase):
         self.edge_reguler = entities.Tree(9, 7)
         self.corner_regular = entities.Tree(9, 0)
 
-        self.all_entity.append(self.sapling)
-        self.all_entity.append(self.regular_tree)
-        self.all_entity.append(self.elder_tree)
-        self.all_entity.append(self.edge_reguler)
-        self.all_entity.append(self.corner_regular)
-
     def test_spawn_sapling(self):
         """
         Will spawn_sapling always correctly spawn a new tree?
@@ -209,15 +203,8 @@ class TreeTest(unittest.TestCase):
         self.assertEquals(self.elder_tree.spawned_sapling, True)
 
     def tearDown(self):
-        # resetting the all_entity list
-        self.all_entity = []
-
-        self.all_entity.append(self.sapling)
-        self.all_entity.append(self.regular_tree)
-        self.all_entity.append(self.elder_tree)
-        self.all_entity.append(self.edge_reguler)
-        self.all_entity.append(self.corner_regular)
-
+        # nothing here for now...
+        pass
 
 if __name__ == '__main__':
     unittest.main()
